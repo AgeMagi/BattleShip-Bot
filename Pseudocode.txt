@@ -1,0 +1,154 @@
+Procedure FindEnemyShip
+// Untuk mencari apakah kapal enemy yang terdeteksi belum hancur atau tidak
+	For x = 1, x < size, x++
+		For y = 1; y < size, y++
+			if (map[x][y].damaged) then
+				//terdapat map yang damaged
+				if (x > 0) then
+					if (map[x-1][y].damaged) then
+						horizontal = true
+						// Terdeteksi kapal horizontal
+				if (x < size-1) then
+					if (map[x+1][y].damaged) then
+						horizontal = true
+						// Terdeteksi kapal horizontal
+				if (y > 0) then
+					if (map[x][y-1].damaged) then
+						vertical = true
+						// Terdeteksi kapal vertikal
+				if (y < size-1) then
+					if (map[x][y+1].damaged) then
+						vertical = true;
+						// Terdeteksi kapal vertikal
+			if (titik) then
+				//terdeteksi damaged titik
+				shot.x = x
+				shot.y = y
+				break
+			if (horizontal) then
+				if (x = 0) then
+					kiri = false
+					// Tidak dapat menembak kiri
+				if (x = size - 1) then
+					kanan = false
+					// Tidak dapat menembak kanan
+			checkLeft() // Mengecek dapat menembak kiri 
+			checkRight() //Mengecek dapat menembak kanan
+			if (vertikal) then
+				if (y = 0) then
+					bawah = false
+					//tidak dapat menembak bawah
+				if (y = size-1) then
+					atas = false
+					//tidak dapat menembak atas
+			checkBelow() // Mengecek dapat menembak bawah
+			checkAbove() //Mengecek dapat menembak atas
+
+			if (ketemu) then
+				shot.x = x
+				shot.y = y
+
+
+Fungsi getShotLocation
+//Untuk Mencari Lokasi Shot yang benar
+
+	if (ketemu and memenuhi untuk menembak crossshot) then
+		mode = 6
+	else if (ketemu dan memenuhi untuk menembak dhoubleshot vertikal) then
+		mode = 2
+	else if (ketemu dan memenuhi untuk menembak doubleshot horizontal) then
+		mode = 3
+	else if (ketemu and horizontal) then
+		if (arah kapal kanan) then
+			while (map[x][y].damaged)
+				shot.x++
+		else if (arah kapal kiri) then
+			while (map[x][y].damaged)
+				shotx--
+	else if (ketemu and vertikal) then
+		if (arah kapal atas) then
+			while (map[x][y].damaged)
+				shot.y++
+		else 
+			while (map[x][y].damaged)	
+				shoty--;
+
+Proecdure FireShot()
+	if (arah tembak tidak valid) then
+		random arah tembak sampai valid sesuai dengan crossboard
+	if (cross check sudah terpenuhi semua) then
+		random arah sampaii valid
+	for(ship[1]..ship[5]) then
+		if (dapat menembak cross shot) then
+			mode = 5
+		else if (dapat menembak cross shot) then
+			mode = 4
+		else if (dapat menembak corner shot) then
+			mode = 7	
+
+Fungsi ValidShotLocation
+// Mengembalikan shot yang valid
+	if ((shot.x + shot.y) mod 2 = 0 and not map[x][y].damaged and not map[x][y].missed then
+		return true
+
+Produksi checkRight
+//Menegembalikan apakah dapat menembak kanan atau tidak
+	x = shot.x + 1
+	while(x < size) do
+		if (map[x][shot.y].missed) then
+			kanan = false
+			break
+		else if (map[x][shot.y].damaged) then
+			break
+		x++
+		if (x = size) then
+			kanan = false
+
+Produksi checkLeft
+//Menegembalikan apakah dapat menembak kiri atau tidak
+	x = shot.x - 1
+	while(x >= 0) do
+		if (map[x][shot.y].missed) then
+			kiri = false
+			break
+		else if (map[x][shot.y].damaged) then
+			break
+		x--
+		if (x = -1) then
+			kanan = false
+
+Produksi checkAbove
+//Menegembalikan apakah dapat menembak atas atau tidak
+	y = shot.y + 1
+	while(y < size) do
+		if (map[shot.x][y].missed) then
+			atas = false
+			break
+		else if (map[shot.x][y].damaged) then
+			break
+		y++
+		if (y = size) then
+			atas = false
+
+Produksi Below
+//Menegembalikan apakah dapat menembak bawah atau tidak
+	y = shot.y - 1
+	while(y >= 0) do
+		if (map[shot.x][y].missed) then
+			bawah = false
+			break
+		else if (map[shot.x][y].damaged) then
+			break
+		y--
+		if (y = -1) then
+			bawah = false
+
+Fungsi validCrossCheck 
+//Mengembalikan nilai apakah masih ada cross board yang masih ditembak
+	for(x = 0..size) do
+		for(y = 0..size) do
+			if (x + y) mod 2 = 0 then
+				if (not map[x][y].damaged || not map[x][y].missed) then
+					return true
+
+	return false
